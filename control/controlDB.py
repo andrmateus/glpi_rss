@@ -12,19 +12,21 @@ class controlDB(cursorDB):
         self.users_id_lastupdater = users_id_lastupdater
 
         if users_id_lastupdater==None:
-             self.sql_query = ''' 
+            self.sql_query = ''' 
             SELECT
                 gt.id as "id",
-                concat("{}", gt.id) as "url",
-                gt.date_mod as "last_update"
+                CONCAT("{}", gt.id) as "url",
+                gt.date_mod as "last_update",
+                gu.name AS "user"
             FROM
-                glpi_tickets gt, glpi_groups_tickets gpt
+                glpi_tickets gt, glpi_groups_tickets gpt, glpi_users gu
             WHERE
                 gt.is_deleted = 0 AND 
                 gt.`status` IN (1,2,3,4) AND 
                 gpt.tickets_id = gt.id AND
                 gpt.groups_id = {} AND
-                gt.date_mod >= (NOW() - INTERVAL 3 DAY)
+                gt.date_mod >= (NOW() - INTERVAL 3 DAY) AND 
+                gu.id = gt.users_id_lastupdater
             '''.format(self.url, self.groups_id)
         else:
             self.sql_query = ''' 

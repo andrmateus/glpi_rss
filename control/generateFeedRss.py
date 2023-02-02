@@ -6,7 +6,7 @@ class generateFeedRss:
         for val in dataFrame.index:
             items.append(
                 rfeed.Item(
-                    title="{} - {}".format(dataFrame['id'][val], dataFrame['last_update'][val]),
+                    title="{} - {} - {}".format(dataFrame['id'][val], dataFrame['last_update'][val], dataFrame['user'][val]),
                     link=str(dataFrame['url'][val]),
                     description="Ticket GLPI"
                 )
